@@ -1,5 +1,7 @@
 # Auto Release Workflow with Release Please
 
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+
 Reusable workflow pour automatiser vos releases avec **Release Please** de Google.
 
 ## Qu'est-ce que Release Please ?
@@ -30,7 +32,7 @@ on:
 
 jobs:
   release:
-    uses: sendo/reusable-workflows/.github/workflows/release.yml@main
+    uses: sendo/reusable-workflows/.github/workflows/release.yml@release-workflow-v1.0.0
     permissions:
       contents: write
       pull-requests: write
@@ -138,7 +140,7 @@ on:
 
 jobs:
   release:
-    uses: sendo/reusable-workflows/.github/workflows/release.yml@main
+    uses: sendo/reusable-workflows/.github/workflows/release.yml@release-workflow-v1.0.0
     permissions:
       contents: write
       pull-requests: write
@@ -156,7 +158,7 @@ on:
 
 jobs:
   release:
-    uses: sendo/reusable-workflows/.github/workflows/release.yml@main
+    uses: sendo/reusable-workflows/.github/workflows/release.yml@release-workflow-v1.0.0
     with:
       release-type: node  # Met à jour automatiquement package.json
     permissions:
@@ -176,7 +178,7 @@ on:
 
 jobs:
   release:
-    uses: sendo/reusable-workflows/.github/workflows/release.yml@main
+    uses: sendo/reusable-workflows/.github/workflows/release.yml@release-workflow-v1.0.0
     with:
       config-file: .github/release-please-config.json
       manifest-file: .github/.release-please-manifest.json

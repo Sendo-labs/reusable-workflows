@@ -1,5 +1,7 @@
 # NPM Publish Workflow
 
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+
 Reusable workflow to test, build, and publish NPM packages with Bun.
 
 ## Usage
@@ -13,7 +15,7 @@ on:
 
 jobs:
   publish:
-    uses: sendo/reusable-workflows/.github/workflows/npm-publish.yml@main
+    uses: sendo/reusable-workflows/.github/workflows/npm-publish.yml@npm-publish-workflow-v1.0.0
     with:
       bun-version: 'latest'
       node-version: '20'
@@ -63,7 +65,7 @@ on:
 
 jobs:
   publish:
-    uses: sendo/reusable-workflows/.github/workflows/npm-publish.yml@main
+    uses: sendo/reusable-workflows/.github/workflows/npm-publish.yml@npm-publish-workflow-v1.0.0
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
@@ -78,7 +80,7 @@ on:
 
 jobs:
   publish:
-    uses: sendo/reusable-workflows/.github/workflows/npm-publish.yml@main
+    uses: sendo/reusable-workflows/.github/workflows/npm-publish.yml@npm-publish-workflow-v1.0.0
     with:
       bun-version: '1.1.0'
       node-version: '22'
@@ -101,7 +103,7 @@ on:
 
 jobs:
   publish:
-    uses: sendo/reusable-workflows/.github/workflows/npm-publish.yml@main
+    uses: sendo/reusable-workflows/.github/workflows/npm-publish.yml@npm-publish-workflow-v1.0.0
     with:
       skip-tests: true
       skip-build: true
