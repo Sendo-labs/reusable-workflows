@@ -18,10 +18,6 @@ on:
         required: false
         type: string
         default: '.release-please-manifest.json'
-    secrets:
-      GITHUB_TOKEN:
-        description: 'GitHub token for creating releases'
-        required: false
 
 jobs:
   release-please:
