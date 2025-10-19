@@ -33,4 +33,4 @@ jobs:
           release-type: ${{ inputs.release-type }}
           config-file: ${{ inputs.config-file }}
           manifest-file: ${{ inputs.manifest-file }}
-          token: ${{ secrets.GITHUB_TOKEN || github.token }}
+          token: ${{ github.token }}
