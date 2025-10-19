@@ -1,0 +1,86 @@
+name: NPM Publish
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: 'Node.js version to use'
+        required: false
+        type: string
+        default: '20'
+      bun-version:
+        description: 'Bun version to use'
+        required: false
+        type: string
+        default: 'latest'
+      working-directory:
+        description: 'Working directory for the project'
+        required: false
+        type: string
+        default: '.'
+      registry-url:
+        description: 'NPM registry URL'
+        required: false
+        type: string
+        default: 'https://registry.npmjs.org'
+      skip-tests:
+        description: 'Skip running tests'
+        required: false
+        type: boolean
+        default: false
+      skip-build:
+        description: 'Skip running build'
+        required: false
+        type: boolean
+        default: false
+      access:
+        description: 'NPM package access level (public or restricted)'
+        required: false
+        type: string
+        default: 'public'
+    secrets:
+      NPM_TOKEN:
+        description: 'NPM authentication token'
+        required: true
+
+jobs:
+  test-build-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ inputs.bun-version }}
+
+      - name: Install dependencies
+        working-directory: ${{ inputs.working-directory }}
+        run: bun install --frozen-lockfile
+
+      - name: Run tests
+        if: ${{ !inputs.skip-tests }}
+        working-directory: ${{ inputs.working-directory }}
+        run: bun test
+
+      - name: Build package
+        if: ${{ !inputs.skip-build }}
+        working-directory: ${{ inputs.working-directory }}
+        run: bun run build
+
+      - name: Setup Node.js for publishing
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          registry-url: ${{ inputs.registry-url }}
+
+      - name: Publish to NPM
+        working-directory: ${{ inputs.working-directory }}
+        run: npm publish --access ${{ inputs.access }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
