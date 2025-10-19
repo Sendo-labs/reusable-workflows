@@ -1,4 +1,4 @@
-name: Auto Release
+name: Auto Release per Workflow
 
 on:
   push:
@@ -12,9 +12,48 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      prs_created: ${{ steps.release.outputs.prs_created }}
+      pr: ${{ steps.release.outputs.pr }}
+
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Release Please
+        id: release
         uses: googleapis/release-please-action@v4
         with:
-          # Type de projet (pour le format de versioning)
-          release-type: simple
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  update-docs:
+    runs-on: ubuntu-latest
+    needs: release-please
+    if: needs.release-please.outputs.prs_created == 'true'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ fromJSON(needs.release-please.outputs.pr).headBranchName }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update README versions
+        id: update-readme
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const updateReadme = require('./.github/scripts/update-readme-version.js');
+            return await updateReadme({ github, context, core });
+
+      - name: Commit updated READMEs
+        if: steps.update-readme.outputs.files_modified == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add **/README.md
+          git commit -m "docs: update README versions in release PR"
+          git push

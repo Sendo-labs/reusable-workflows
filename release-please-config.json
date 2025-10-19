@@ -1,13 +1,24 @@
 {
-  "release-type": "simple",
   "packages": {
-    ".": {
+    "release": {
       "changelog-path": "CHANGELOG.md",
       "release-type": "simple",
+      "component": "release-workflow",
       "bump-minor-pre-major": true,
       "bump-patch-for-minor-pre-major": false,
       "draft": false,
-      "prerelease": false
+      "prerelease": false,
+      "include-component-in-tag": true
+    },
+    "npm-publish": {
+      "changelog-path": "CHANGELOG.md",
+      "release-type": "simple",
+      "component": "npm-publish-workflow",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": false,
+      "draft": false,
+      "prerelease": false,
+      "include-component-in-tag": true
     }
   },
   "changelog-sections": [
