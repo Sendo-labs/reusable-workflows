@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feat/wip
 
 permissions:
   contents: write
